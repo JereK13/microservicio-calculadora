@@ -1,0 +1,17 @@
+services:
+  # Servicio 1: Tu multiplicador original
+  multiplicador:
+    image: jerek13/multiplicador:latest
+    ports:
+      - "5000:5000"
+
+  # Servicio 2: Tu nuevo cliente API
+  cliente:
+    build: .  # Construye la imagen usando el Dockerfile de esta carpeta
+    ports:
+      - "8000:8000"
+    environment:
+      # Aquí ocurre la magia: le decimos que busque al host "multiplicador"
+      - MULTIPLICADOR_URL=http://multiplicador:5000
+    depends_on:
+      - multiplicador # Le dice a Docker que inicie el multiplicador primero
